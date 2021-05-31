@@ -1,0 +1,101 @@
+// const TableComponent = () => {
+//     return (
+//         <View>
+//             <View style={style.tableHeader}>
+//                 <View style={[style.tableColumn]}>
+//                     <Text numberOfLines={1} style={style.tableColumnText}>No.</Text>
+//                 </View>
+//                 <View style={[style.tableColumn, {flex: 4}]}>
+//                     <Text numberOfLines={1}  style={style.tableColumnText}>Name</Text>
+//                 </View>
+//                 <View style={[style.tableColumn, {flex: 2}]}>
+//                     <Text numberOfLines={1} style={style.tableColumnText}>Quantity</Text>
+//                 </View>
+//                 <View style={[style.tableColumn, {flex: 2}]}>
+//                     <Text numberOfLines={1} style={style.tableColumnText}>Price</Text>
+//                 </View>
+//             </View>
+
+//             <View style={style.tableList}>
+//                 <View style={styles.tableListItemRow}>
+//                     <View style={[style.tableColumn]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>1</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 4}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>Apple.</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 2}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>0.5 Kg</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 2}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>1200</Text>
+//                     </View>
+//                 </View>
+//                 <View style={styles.tableListItemRow}>
+//                     <View style={[style.tableColumn]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>2</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 4}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>Apple.</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 2}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>0.5 Kg</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 2}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>1200</Text>
+//                     </View>
+//                 </View>
+//                 <View style={styles.tableListItemRow}>
+//                     <View style={[style.tableColumn]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>3</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 4}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>Apple.</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 2}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>0.5 Kg</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 2}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>1200</Text>
+//                     </View>
+//                 </View>
+//                 <View style={styles.tableListItemRow}>
+//                     <View style={[style.tableColumn]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>4</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 4}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>Apple.</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 2}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>0.5 Kg</Text>
+//                     </View>
+//                     <View style={[style.tableColumn, {flex: 2}]}>
+//                         <Text numberOfLines={1} style={style.tableColumnText}>1200</Text>
+//                     </View>
+//                 </View>
+//             </View>
+//         </View>
+//     )
+// }
+
+//   tableHeader: {
+//     flexDirection: "row",
+//     height: 60,
+//     paddingHorizontal: 12,
+//     paddingVertical: 8,
+//   },
+//   tableColumn: {
+//     flex: 1,
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//   tableColumnText: {
+//     textAlign: "center",
+//   },
+//   tableList: {},
+//   tableListItemRow: {
+//     flexDirection: "row",
+//     height: 60,
+//     paddingHorizontal: 12,
+//     paddingVertical: 8,
+//   },
