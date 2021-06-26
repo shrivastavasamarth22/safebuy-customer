@@ -8,3 +8,4 @@
 - [ ] Animation in Reanimated 2
 - [ ] expo-media-library asset check on startup
 - [ ] Keyboard avoiding view for bottom sheet
+- [ ] Authentication System
