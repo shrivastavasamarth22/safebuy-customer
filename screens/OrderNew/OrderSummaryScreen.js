@@ -13,17 +13,44 @@ import {
 import BottomSheet from "reanimated-bottom-sheet";
 import { Card } from "react-native-shadow-cards";
 import { LinearGradient } from "expo-linear-gradient";
-import { icons, COLORS, images } from "../constants";
-import { shopData } from "../mock-data";
-import { TopBar } from "../components";
-import { ShopPanel } from "../components";
+import { useSelector, useDispatch } from "react-redux";
+
+import { icons, COLORS, images } from "../../constants";
+import { shopData } from "../../mock-data";
+import { TopBar } from "../../components";
+import { ShopPanel } from "../../components";
+import * as bagActions from '../../store/actions/bag';
+import * as orderActions from '../../store/actions/order'
 
 
 const OrderSummaryScreen = ({ navigation, route }) => {
-    const { shopId, orderItems } = route.params;
-    const [orderList, setOrderList] = useState(orderItems);
+    const { shopId } = route.params;
     const [visible, setVisible] = useState(false);
     const bottomSheetRef = useRef(null);
+
+    const bagTotalAmount = useSelector(state => state.bag.totalAmount);
+    const bagItems = useSelector(state => {
+        const transformedBagItems = [];
+        for (const key in state.bag.items) {
+            const item = state.bag.items[key];
+            transformedBagItems.push({
+                itemId: key,
+                name: item.name,
+                hindiName: item.hindiName,
+                image: item.image,
+                category: item.category,
+                pricePerUnitToPrint: item.pricePerUnitToPrint,
+                unit: item.unit,
+                increment: item.increment,
+                multiplier: item.multiplier,
+                qty: item.qty,
+                sum: item.sum
+            })
+        }
+        return transformedBagItems;
+    })
+
+    const dispatch = useDispatch();
 
     const selectedShop = useMemo(() => {
         return shopData.find((shop) => shop.id === shopId);
@@ -62,28 +89,19 @@ const OrderSummaryScreen = ({ navigation, route }) => {
 
     today = dd + "-" + mm + "-" + yyyy;
 
-    const getOrderQty = (itemId) => {
-        let orderItem = orderList.filter((item) => item.itemId == itemId);
-
-        if (orderItem.length > 0) {
-            return orderItem[0].qty;
+    const editOrder = (action, product) => {
+        if (action === "+") {
+            dispatch(bagActions.addToBag(product))
+        } else {
+            dispatch(bagActions.removeFromBag(product.itemId))
         }
-
-        return 0;
-    };
+    }
 
     const renderCounter = (item) => {
         return (
             <View style={styles.counterMainContainer}>
                 <TouchableOpacity
-                    onPress={() =>
-                        editBag(
-                            "-",
-                            item.itemId,
-                            item.increment,
-                            item.multiplier
-                        )
-                    }
+                    onPress={() => editOrder("-", item)}
                 >
                     <View style={styles.counterContainer1}>
                         <Image
@@ -95,18 +113,11 @@ const OrderSummaryScreen = ({ navigation, route }) => {
                 </TouchableOpacity>
                 <View style={styles.counterQuantityBoxStyle}>
                     <Text style={styles.counterQuantityTextStyle}>
-                        {getOrderQty(item.itemId) + ` ${item.unit}`}
+                        {item.qty + " " + item.unit}
                     </Text>
                 </View>
                 <TouchableOpacity
-                    onPress={() =>
-                        editBag(
-                            "+",
-                            item.itemId,
-                            item.increment,
-                            item.multiplier
-                        )
-                    }
+                    onPress={() => editOrder("+", item)}
                 >
                     <View style={styles.counterContainer2}>
                         <Image
@@ -120,42 +131,9 @@ const OrderSummaryScreen = ({ navigation, route }) => {
         );
     };
 
-    const editBag = (action, itemId, increment, multiplier) => {
-        const newOrderList = orderList.slice();
-        const item = newOrderList.find((item) => item.itemId == itemId);
-        if (!item) return;
-
-        const newQty =
-            action == "+" ? item.qty + increment : item.qty - increment;
-
-        if (newQty === 0) {
-            setOrderList((currentList) =>
-                currentList.filter((item) => item.itemId !== itemId)
-            );
-        }
-
-        setOrderList((currentList) =>
-            currentList.map((item) => {
-                if (item.itemId == itemId) {
-                    return {
-                        ...item,
-                        qty: newQty,
-                        total: newQty * multiplier,
-                    };
-                }
-                return item;
-            })
-        );
-    };
-
-    if (orderList.length == 0) {
+    if (bagItems.length === 0) {
         navigation.goBack();
     }
-
-    const sumOrder = () => {
-        let total = orderList.reduce((a, b) => a + (b.total || 0), 0);
-        return total.toFixed(2);
-    };
 
     const renderInner = () => {
         return (
@@ -166,7 +144,7 @@ const OrderSummaryScreen = ({ navigation, route }) => {
                     <Text
                         style={styles.sheetHeaderText}
                     >
-                        Select Delivery Option: 
+                        Select Pickup Option:
                     </Text>
                     <TouchableOpacity onPress={onCloseBottomSheet} style={{
                         padding: 10,
@@ -183,7 +161,12 @@ const OrderSummaryScreen = ({ navigation, route }) => {
                     <Text
                         style={styles.sheetTextStyle}
                     >
-                        {`Total Items: 0${orderList.length}`}
+                        Total Items:
+                    </Text>
+                    <Text
+                        style={styles.sheetTextStyle}
+                    >
+                        {`0${bagItems.length}`}
                     </Text>
                 </View>
                 <View
@@ -192,11 +175,19 @@ const OrderSummaryScreen = ({ navigation, route }) => {
                     <Text
                         style={styles.sheetTextStyle}
                     >
-                        {"Grand Total: ₹ " + sumOrder()}
+                        Grand Total:
+                    </Text>
+                    <Text
+                        style={styles.sheetTextStyle}
+                    >
+                        {`₹ ${bagTotalAmount}`}
                     </Text>
                 </View>
                 <View style={styles.sheetButtonContainer}>
-                    <TouchableOpacity style={styles.sheetButtonStyle} onPress={() => navigation.navigate("OrderStatusFlow")}>
+                    <TouchableOpacity style={styles.sheetButtonStyle} onPress={() => {
+                        dispatch(orderActions.addOrder(bagItems, bagTotalAmount, "homeDelivery", shopId));
+                        navigation.navigate("OrderStatusFlow")
+                    }}>
                         <Image 
                             source={icons.map_marker}
                             style={styles.markerIconStyle}
@@ -205,7 +196,10 @@ const OrderSummaryScreen = ({ navigation, route }) => {
                             Home Delivery
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.sheetButtonStyle} onPress={() => navigation.navigate("OrderStatusFlow")}>
+                    <TouchableOpacity style={styles.sheetButtonStyle} onPress={() => {
+                        dispatch(orderActions.addOrder(bagItems, bagTotalAmount, "walkIn", shopId));
+                        navigation.navigate("OrderStatusFlow")
+                    }}>
                         <Image 
                             source={icons.walk_in}
                             style={styles.walkInIconStyle}
@@ -247,9 +241,9 @@ const OrderSummaryScreen = ({ navigation, route }) => {
                     today={today}
                 />
 
-                {/* Cart */}
+                 {/*Cart */}
                 <FlatList
-                    data={orderList}
+                    data={bagItems}
                     keyExtractor={(item) => item.itemId.toString()}
                     renderItem={({ item }) => (
                         <Card style={styles.cartCardStyle}>
@@ -258,9 +252,11 @@ const OrderSummaryScreen = ({ navigation, route }) => {
                                     alignItems: "center",
                                 }}
                             >
-                                <Text>{item.hindiName}</Text>
+                                <Text style={styles.itemHindiTextStyle}>
+                                    {item.hindiName}
+                                </Text>
                                 <Image
-                                    source={item.photo}
+                                    source={item.image}
                                     style={styles.itemImageStyle}
                                     resizeMode="contain"
                                 />
@@ -479,18 +475,21 @@ const styles = StyleSheet.create({
         height: 18,
         width: 18,
         resizeMode: "contain",
-        tintColor: "#BBB",
+        tintColor: "#111",
     },
     textContainer: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
         paddingHorizontal: 24,
+        marginBottom: 10,
+        paddingVertical: 5,
+        backgroundColor: COLORS.orange
     },
     sheetTextStyle: {
         fontSize: 18,
         fontFamily: "Roboto_500Medium",
-        color: "#95989A",
+        color: "white",
     },
     sheetButtonContainer: {
         flexDirection: "row",
@@ -539,6 +538,10 @@ const styles = StyleSheet.create({
         width: "95%",
         paddingHorizontal: 24,
         paddingVertical: 24
+    },
+    itemHindiTextStyle: {
+        fontFamily: 'yantramanav_regular',
+        fontSize: 16
     }
 });
 

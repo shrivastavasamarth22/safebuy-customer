@@ -10,21 +10,25 @@ import {
     ToastAndroid,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { icons, COLORS } from "../constants";
+import { useSelector, useDispatch } from "react-redux";
+
+import { icons, COLORS } from "../../constants";
 import {
     TopBar,
     SearchBar,
     ActiveVegetablePicker,
     ActiveFruitPicker,
     OrderItemCard,
-} from "../components/";
-import { shopData } from "../mock-data";
+} from "../../components";
+import { shopData } from "../../mock-data";
+
+import * as bagActions from '../../store/actions/bag'
 
 const VegetableListScreen = ({ navigation, route }) => {
     const { id } = route.params;
     const [search, setSearch] = useState("");
     const [active, setActive] = useState("vegetable");
-    const [orderItems, setOrderItems] = useState([]);
+    const [barVisible, setBarVisible] = useState(false)
 
     const { shopName, vegetables, fruits } = useMemo(() => {
         const vegetables = [];
@@ -34,7 +38,7 @@ const VegetableListScreen = ({ navigation, route }) => {
         const searchRegex = new RegExp(search, "gi");
 
         if (shop && shop.items && shop.items.length) {
-            const isSearchable = search && search.length > 3;
+            const isSearchable = search && search.length > 1;
             shop.items.forEach((i) => {
                 const nameMatches = searchRegex.test(i.name);
                 const hindiNameMatches = searchRegex.test(i.hindiName);
@@ -50,65 +54,43 @@ const VegetableListScreen = ({ navigation, route }) => {
         setSearch(query);
     };
 
-    const editOrder = (action, product, orderItem) => {
-        const newOrderItems = orderItems.slice();
-        if (!orderItem && action == "+") {
-            const newItem = {
-                itemId: product.itemId,
-                increment: product.increment,
-                multiplier: product.multiplier,
-                pricePerUnitToPrint: product.pricePerUnitToPrint,
-                unit: product.unit,
-                hindiName: product.hindiName,
-                name: product.name,
-                photo: product.photo,
-                qty: product.increment,
-                total: product.increment * product.multiplier,
-            };
-            newOrderItems.push(newItem);
-            setOrderItems(newOrderItems);
-            return;
-        }
+    const dispatch = useDispatch();
 
-        if (!orderItem && action == "-") {
-            ToastAndroid.showWithGravity(
-                "Cannot perform action since quantity is already 0",
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER
-            )
-            return;
-        }
-
-        const newQty =
-            action == "+"
-                ? orderItem.qty + product.increment
-                : orderItem.qty - product.increment;
-
-        if (newQty === 0) {
-            setOrderItems((currentList) =>
-                currentList.filter((i) => i.itemId !== product.itemId)
-            );
-        }
-
-        setOrderItems((currentList) =>
-            currentList.map((item) => {
-                if (item.itemId === product.itemId) {
-                    return {
-                        ...item,
-                        qty: newQty,
-                        total: newQty * product.multiplier,
-                    };
-                }
-                return item;
+    const bagTotalAmount = useSelector(state => state.bag.totalAmount);
+    const bagItems = useSelector(state => {
+        const transformedBagItems = [];
+        for (const key in state.bag.items) {
+            transformedBagItems.push({
+                itemId: key,
+                qty: state.bag.items[key].qty,
+                sum: state.bag.items[key].sum
             })
-        );
-    };
+        }
+        return transformedBagItems;
+    })
+
+    const editOrder = (action, product) => {
+        if (action === "+") {
+            dispatch(bagActions.addToBag(product))
+        } else if (action === "-") {
+            const foundItem = bagItems.find(i => i.itemId === product.itemId.toString());
+            console.log(foundItem);
+            if (!!foundItem) {
+                dispatch(bagActions.removeFromBag(product.itemId))
+            } else {
+                ToastAndroid.showWithGravity(
+                    "The item is not in your bag",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                )
+            }
+        }
+    }
 
     const onButtonPress = () => {
-        if (orderItems.length > 0) {
+        if (bagItems.length > 0) {
             navigation.navigate("Order Summary", {
                 shopId: id,
-                orderItems,
             });
         } else {
             ToastAndroid.showWithGravity(
@@ -117,11 +99,6 @@ const VegetableListScreen = ({ navigation, route }) => {
                 ToastAndroid.CENTER
             );
         }
-    };
-
-    const sumOrder = () => {
-        let total = orderItems.reduce((a, b) => a + (b.total || 0), 0);
-        return total.toFixed(2);
     };
 
     return (
@@ -135,11 +112,23 @@ const VegetableListScreen = ({ navigation, route }) => {
             <TopBar
                 headerText={shopName}
                 onBackButtonPress={() => navigation.goBack()}
-                searchEnabled={false}
+                searchEnabled
+                onSearchButtonPress={() => {
+                    setBarVisible((prev) => !prev)
+                }}
             />
 
             {/* Search Bar */}
-            <SearchBar search={search} onChangeText={updateSearch} />
+            {
+                barVisible
+                    ? <SearchBar
+                        search={search}
+                        onChangeText={updateSearch}
+                        placeholder={"Search items here"}
+                    />
+                    : null
+            }
+
 
             {/* Vegetable or Fruit Picker */}
             {active === "vegetable" ? (
@@ -147,24 +136,23 @@ const VegetableListScreen = ({ navigation, route }) => {
             ) : (
                 <ActiveFruitPicker onPress={() => setActive("vegetable")} />
             )}
-            {/* Vegetablle & Fruit List */}
+            {/* Vegetable & Fruit List */}
             <FlatList
                 data={active === "vegetable" ? vegetables : fruits}
-                extraData={[orderItems]}
                 keyExtractor={(product) => `itemNo-${product.itemId}`}
-                contentContainerStyle={{ paddingHorizontal: 12 }}
+                contentContainerStyle={{ paddingHorizontal: 12, paddingTop: 5 }}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: product }) => {
-                    const orderItem = orderItems.find(
-                        (i) => i.itemId === product.itemId
+                    const orderItem = bagItems.find(
+                        i => i.itemId === product.itemId.toString()
                     );
-                    const quantity = (orderItem && orderItem.qty) || 0;
+                    const quantity = orderItem ? orderItem.qty : 0;
                     return (
                         <OrderItemCard
                             item={product}
                             quantity={quantity}
-                            onAdd={() => editOrder("+", product, orderItem)}
-                            onRemove={() => editOrder("-", product, orderItem)}
+                            onAdd={() => editOrder("+", product)}
+                            onRemove={() => editOrder("-", product)}
                         />
                     );
                 }}
@@ -187,10 +175,10 @@ const VegetableListScreen = ({ navigation, route }) => {
                             }}
                         >
                             <Text style={styles.numberOfItemsTextStyle}>
-                                {`0${orderItems.length} items`}
+                                {`0${bagItems.length} items`}
                             </Text>
                             <Text style={styles.totalAmountTextStyle}>
-                                {"₹" + sumOrder()}
+                                {`₹ ${bagTotalAmount}`}
                             </Text>
                         </View>
                         <View
@@ -216,6 +204,7 @@ const VegetableListScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "white"
     },
     buttonGradientStyle: {
         alignItems: "center",

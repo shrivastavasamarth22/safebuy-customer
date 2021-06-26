@@ -1,15 +1,17 @@
 import React from "react";
 import { View, StyleSheet, Dimensions, Image, TextInput, TouchableOpacity } from "react-native";
+import { MaterialIcons } from '@expo/vector-icons';
 import { icons } from "../constants";
 const { SCREEN_WIDTH } = Dimensions.get("window");
 
 /**
  * @param {String} searchText The search input which comes to the text input field
- * @param {Function} onChangeText The callback to call when text changes in the textfield
- * @param {Function} onArrowPress The callback to call when we press the arrow 
+ * @param {func} onChangeText The callback to call when text changes in the textfield
+ * @param {func} onArrowPress The callback to call when we press the arrow
+ * @param {string} placeholder The placeholder for the text input
 */
 
-const SearchBar = ({ searchText, onChangeText, onArrowPress }) => {
+const SearchBar = ({ searchText, onChangeText, onArrowPress, placeholder }) => {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.searchBox}>
@@ -20,15 +22,12 @@ const SearchBar = ({ searchText, onChangeText, onArrowPress }) => {
                 />
                 <TextInput
                     style={styles.searchTextStyle}
-                    placeholder="Search items here"
+                    placeholder={placeholder}
                     value={searchText}
                     onChangeText={onChangeText}
                 />
                 <TouchableOpacity onPress={onArrowPress}>
-                    <Image
-                        source={icons.arrow_right}
-                        style={styles.arrowIconStyle}
-                    />
+                    <MaterialIcons name="arrow-forward" size={28} color="#95989A" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -40,9 +39,8 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH,
         alignItems: "center",
         justifyContent: "center",
-        height: 80,
+        height: 65,
         paddingHorizontal: 10,
-        marginBottom: 10,
     },
     searchBox: {
         flexDirection: "row",
@@ -54,6 +52,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         borderRadius: 2,
         paddingHorizontal: 5,
+        paddingRight: 10
     },
     searchIconStyle: {
         height: 50,

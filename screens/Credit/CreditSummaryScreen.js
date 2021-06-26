@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import { COLORS, images } from "../constants";
-import { TopBar, ShopPanel } from "../components";
+import { COLORS, images } from "../../constants";
+import { TopBar, ShopPanel } from "../../components";
 
 const CreditSummaryScreen = ({ navigation }) => {
     return (

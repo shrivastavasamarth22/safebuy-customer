@@ -8,19 +8,19 @@ import QuantityCounter from "./QuantityCounter";
 const { SCREEN_WIDTH } = Dimensions.get("window");
 
 /**
- * @param {OrderItem|Product} item The actual item/product to render in the card
- * @param {String|Number} quantity The orderItem/product quantity
+ * @param {OrderItem|Item} item The actual item/product to render in the card
+ * @param {number} quantity The quantity of the item in the bag
  * @param {Function} onAdd The callback to call when we're increasing the quantity
  * @param {Function} onRemove The callback to call when we're decreasing the quantity
  * @returns 
  */
-export default function OrderItemCard({ item, quantity, onAdd, onRemove }) {
+export default function OrderItemCard({ item, onAdd, onRemove, quantity }) {
   return (
     <Card style={styles.cardStyle}>
       <View style={styles.cardContainerStyle}>
         <Text style={styles.itemHindiNameTextStyle}>{item.hindiName}</Text>
         <Image
-          source={item.photo}
+          source={item.image}
           resizeMode="center"
           style={styles.imageStyle}
         />
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: SCREEN_WIDTH,
     marginBottom: 15,
-    elevation: 2,
+    elevation: 5,
   },
   cardContainerStyle: {
     alignItems: "center",
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   itemHindiNameTextStyle: {
     fontSize: 18,
-    fontFamily: "Roboto_400Regular",
+    fontFamily: 'yantramanav_medium',
   },
   imageStyle: {
     width: 100,
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 30,
     paddingHorizontal: 10,
+    borderBottomLeftRadius: 5
   },
   itemRateTextStyle: {
     fontSize: 16,

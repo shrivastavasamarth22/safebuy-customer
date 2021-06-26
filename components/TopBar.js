@@ -69,7 +69,7 @@ const TopBar = ({
 const styles = StyleSheet.create({
   mainContainer: {
     width: SCREEN_WIDTH,
-    height: 65,
+    height: "9%",
     flexDirection: "row",
     paddingHorizontal: 5,
     alignItems: "center",

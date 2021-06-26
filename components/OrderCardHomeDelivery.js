@@ -1,14 +1,16 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { Card } from "react-native-shadow-cards";
-import { icons, COLORS, images } from "../constants";
+import {View, Text, Image, StyleSheet, TouchableOpacity, TouchableNativeFeedback} from "react-native";
+import {Card} from "react-native-shadow-cards";
+import {icons, COLORS, images} from "../constants";
 
 /**
  * @param {Boolean} status The status of the order
- * @param {Function} onPress The callback to call when we press the card
+ * @param {func} onPress The callback to call when we press the card
+ * @param {string} timeReceived The string time of the order received
+ * @param {string} orderNo The order no of the order
  */
 
-const OrderCardHomeDelivery = ({ status, onPress }) => {
+const OrderCardHomeDelivery = ({status, onPress, timeReceived, orderNo}) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={onPress}>
@@ -44,16 +46,16 @@ const OrderCardHomeDelivery = ({ status, onPress }) => {
                                 </Text>
                             </View>
                         </View>
-                        <View style={{ alignItems: "flex-end" }}>
+                        <View style={{alignItems: "flex-end"}}>
                             <Text style={styles.subHeaderTextStyle}>
-                                Received at:
+                                Created on:
                             </Text>
-                            <Text style={styles.timeTextStyle}>12:55 PM</Text>
+                            <Text style={styles.timeTextStyle}>{timeReceived}</Text>
                             <Text style={styles.subHeaderTextStyle}>
                                 Order No.
                             </Text>
                             <Text style={styles.orderNumberTextStyle}>
-                                YYYYMMDD00X
+                                {orderNo}
                             </Text>
                             <Text style={styles.subHeaderTextStyle}>
                                 Status:
@@ -61,7 +63,7 @@ const OrderCardHomeDelivery = ({ status, onPress }) => {
                             <Text
                                 style={[
                                     styles.statusTextStyle,
-                                    { color: status ? COLORS.primary : "red" },
+                                    {color: status ? COLORS.primary : "red"},
                                 ]}
                             >
                                 {status ? "In-Transit" : "Not Confirmed"}
@@ -79,16 +81,13 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     bannerStyle: {
-        alignItems: "center",
-        justifyContent: "center",
-        paddingRight: 10,
+        paddingLeft: 10,
         backgroundColor: COLORS.orange,
         flexDirection: "row",
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
-        width: 150,
-        paddingTop: 5,
-        paddingBottom: 8
+        width: "100%",
+        paddingVertical: 8
     },
     markerIconStyle: {
         width: 21,
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
     bannerTextStyle: {
         color: "white",
         fontFamily: "Roboto_500Medium",
-        fontSize: 14,
+        fontSize: 16,
     },
     cardStyle: {
         width: "100%",

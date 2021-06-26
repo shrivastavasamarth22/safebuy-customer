@@ -6,10 +6,10 @@ import {
     Image,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { icons } from "../constants";
-import { TopBar, SearchBar } from "../components";
+import { icons } from "../../constants";
+import { TopBar, SearchBar } from "../../components";
 
-import { shopData } from "../mock-data";
+import { shopData } from "../../mock-data";
 
 const SearchScreen = ({ navigation }) => {
     const [search, setSearch] = useState("");
@@ -41,7 +41,7 @@ const SearchScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <StatusBar backgroundColor="#8c24e3" barStyle="light-content" />
+            <StatusBar backgroundColor="#6d0fbc" barStyle="light-content" />
             <TopBar
                 headerText="Search"
                 onBackButtonPress={() => navigation.goBack()}
@@ -51,6 +51,7 @@ const SearchScreen = ({ navigation }) => {
                 searchText={search}
                 onChangeText={updateSearch}
                 onArrowPress={onArrowPress}
+                placeholder={"Search sellers by phone number"}
             />
 
             <MapView

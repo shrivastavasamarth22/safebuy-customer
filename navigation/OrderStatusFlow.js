@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { OrderStatusScreen, OrderStatusHomeDeliveryConfirmed, OrderStatusHomeDelivery } from '../screens'
+import { OrderStatusScreen, OrderStatusHomeDeliveryConfirmed, OrderStatusHomeDelivery, OrderStatusWalkIn } from '../screens'
 
 const Stack = createStackNavigator();
 
@@ -14,13 +14,18 @@ const OrderStatusFlow = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen 
-                name="OrderStatusExpanded"
+                name="OrderStatusHomeDeliveryExpanded"
                 component={OrderStatusHomeDelivery}
                 options={{ headerShown: false }}
             />
             <Stack.Screen 
                 name="OrderStatusExpandedConfirmed"
                 component={OrderStatusHomeDeliveryConfirmed}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="OrderStatusWalkInExpanded"
+                component={OrderStatusWalkIn}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

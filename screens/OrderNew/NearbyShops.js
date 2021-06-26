@@ -5,44 +5,44 @@ import {
     StyleSheet,
     Dimensions,
     Image,
-    TouchableWithoutFeedback,
     FlatList,
     TouchableOpacity,
     StatusBar,
-    ToastAndroid
+    ToastAndroid, TouchableNativeFeedback
 } from "react-native";
 import { Card } from "react-native-shadow-cards";
 
-import { shopData } from "../mock-data";
-import { icons, COLORS } from "../constants";
-import { TopBar } from "../components/";
+import { useSelector, useDispatch } from "react-redux";
+
+import { shopData } from "../../mock-data";
+import { icons, COLORS } from "../../constants";
+import { TopBar } from "../../components";
+import * as favoriteActions from '../../store/actions/favorites'
 
 const { SCREEN_WIDTH } = Dimensions.get("window");
 
 const NearbyShops = ({ navigation }) => {
-    const [favoriteList, setFavoriteList] = useState([]);
 
-    const editFavoriteList = async (id) => {
-        const newList = favoriteList.slice();
-        const found = newList.find(item => item == id)
+    const favoritesList = useSelector(state => state.favorites.favorites);
+    const dispatch = useDispatch();
+
+    const editFavoritesList = (id) => {
+        const newList = favoritesList.slice();
+        const found = newList.find(shopId => shopId === id);
         if (!!found) {
-            const filteredList = newList.filter(item => item != id);
-            setFavoriteList(filteredList)
-            return;
+            dispatch(favoriteActions.removeFromFavorites(id));
         } else {
             if (newList.length <= 4) {
-                newList.push(id);
-                setFavoriteList(newList);
+                dispatch(favoriteActions.addToFavorites(id))
             } else {
                 ToastAndroid.showWithGravity(
                     "Cannot favorite more than 5",
                     ToastAndroid.SHORT,
                     ToastAndroid.CENTER
                 )
-                return;
             }
         }
-    };
+    }
 
     return (
         <View style={styles.container}>
@@ -76,12 +76,13 @@ const NearbyShops = ({ navigation }) => {
                 keyExtractor={(item) => `itemNo-${item.id}`}
                 renderItem={({ item }) => {
                     return (
-                        <TouchableWithoutFeedback
+                        <TouchableNativeFeedback
                             onPress={() =>
                                 navigation.navigate("Vegetable List", {
                                     id: item.id,
                                 })
                             }
+                            useForeground
                         >
                             <View style={styles.listContainer}>
                                 <Image
@@ -97,14 +98,14 @@ const NearbyShops = ({ navigation }) => {
                                         </Text>
                                         <TouchableOpacity
                                             onPress={() =>
-                                                editFavoriteList(item.id)
+                                                editFavoritesList(item.id)
                                             }
                                             style={{
                                                 padding: 5
                                             }}
                                         >
                                             {
-                                                (!!favoriteList.find(i => i == item.id)) 
+                                                (!!favoritesList.find(i => i === item.id))
                                                 ? <Image
                                                 source={icons.heart_filled}
                                                 resizeMode="cover"
@@ -136,7 +137,7 @@ const NearbyShops = ({ navigation }) => {
                                     </View>
                                 </Card>
                             </View>
-                        </TouchableWithoutFeedback>
+                        </TouchableNativeFeedback>
                     );
                 }}
             />
@@ -147,6 +148,7 @@ const NearbyShops = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "white"
     },
     noticeContainer: {
         width: SCREEN_WIDTH,
@@ -188,7 +190,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 10,
     },
     shopName: {
         fontFamily: "Roboto_700Bold",

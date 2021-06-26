@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, StatusBar, ImageBackground } from 'react-native';
-import { TopBar } from "../components"
-import { images, icons, COLORS } from '../constants';
+import { TopBar } from "../../components"
+import { images, icons, COLORS } from '../../constants';
 const { SCREEN_WIDTH } = Dimensions.get("window");
 
 const ShopCategoryScreen = ({ navigation, route }) => {
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     backgroundImage: {
         flex: 1,
         resizeMode: "cover",
+        backgroundColor: "white"
     },
     listElement: {
         flexDirection: "row",

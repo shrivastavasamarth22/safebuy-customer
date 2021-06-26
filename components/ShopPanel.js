@@ -31,8 +31,9 @@ const ShopPanel = ({ photo, name, address, phone, today, orderNumber }) => {
                     <Text style={styles.shopNameStyle}>{name}</Text>
                     <Text
                         style={{
-                            width: "60%",
-                            marginBottom: 10,
+                            width: "55%",
+                            marginBottom: 5,
+                            textAlign: "justify"
                         }}
                     >
                         {address}
@@ -72,9 +73,9 @@ const styles = StyleSheet.create({
     panelMainContainer: {
         width: SCREEN_WIDTH,
         paddingHorizontal: 12,
-        paddingTop: 20,
+        paddingTop: 10,
         paddingBottom: 10,
-        marginBottom: 10,
+        marginBottom: 5,
         justifyContent: "space-between",
         backgroundColor: "white",
     },
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     shopNameStyle: {
         fontFamily: "Roboto_500Medium",
         fontSize: 18,
-        color: "#024D01",
+        color: COLORS.primary,
     },
     panelContainer2: {
         flexDirection: "row",
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
         height: 15,
         width: 15,
         marginRight: 10,
+        tintColor: "#000"
     },
     shopPhoneTextStyle: {
         fontFamily: "Roboto_400Regular",
@@ -110,12 +112,12 @@ const styles = StyleSheet.create({
     dateTextStyle: {
         fontFamily: "Roboto_500Medium",
         fontSize: 15,
-        color: "#AAA",
+        color: "#111",
     },
     orderNumberTextStyle: {
         fontFamily: "Roboto_500Medium",
         fontSize: 15,
-        color: "#AAA",
+        color: "#111",
     },
 });
 

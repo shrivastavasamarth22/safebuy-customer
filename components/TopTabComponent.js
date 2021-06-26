@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
     mainContainer: {
         flexDirection: "row",
         alignItems: "center",
-        height: 55,
+        height: 50,
+        elevation: 5,
         backgroundColor: "#8c24e3",
         width: "100%",
         justifyContent: "space-between",
         paddingHorizontal: 12,
-        elevation: 10
     },
     pressableStyle: {
         flex: 1,

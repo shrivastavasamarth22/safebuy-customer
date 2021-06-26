@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: SCREEN_WIDTH,
         paddingHorizontal: 10,
-        marginBottom: 30
+        marginVertical: 10
     },
     leftButton: {
         flexDirection: "row",

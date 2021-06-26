@@ -1,5 +1,4 @@
-// const TableComponent = () => {
-//     return (
+
 //         <View>
 //             <View style={style.tableHeader}>
 //                 <View style={[style.tableColumn]}>
@@ -75,8 +74,6 @@
 //                 </View>
 //             </View>
 //         </View>
-//     )
-// }
 
 //   tableHeader: {
 //     flexDirection: "row",

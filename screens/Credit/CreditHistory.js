@@ -1,12 +1,18 @@
 import React from "react";
 import { StyleSheet, StatusBar, ImageBackground, View } from "react-native";
 
-import { images } from "../constants";
-import { CreditCard, TopTabComponent } from "../components";
+import { images } from "../../constants";
+import {CreditCard, HeaderBar, TopTabComponent} from "../../components";
 
 const CreditHistory = ({ navigation }) => {
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+            <HeaderBar
+                headerText={"Credit History"}
+                onPress={() => {
+                    navigation.navigate("SettingsFlow")
+                }}
+            />
             <TopTabComponent
                 onNewPress={() => navigation.navigate("OrderNewFlow")}
                 onStatusPress={() => navigation.navigate("OrderStatusFlow")}

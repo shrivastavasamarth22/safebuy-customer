@@ -25,6 +25,10 @@ export const sharma = require('../assets/images/shop/Sharma.jpg');
 export const subramaniam = require('../assets/images/shop/Subramaniam.jpg');
 
 export const background = require('../assets/images/BACKGROUND.png')
+export const empty_order = require('../assets/images/empty-order.png');
+export const user = require('../assets/images/user.png')
+export const background_white = require('../assets/images/BACKGROUND_WHITE.png')
+export const safebuy_2 = require('../assets/images/SafeBuy_2.png')
 
 export default {
     coriander,
@@ -43,5 +47,9 @@ export default {
     saxena,
     sharma,
     subramaniam,
-    background
+    background,
+    background_white,
+    empty_order,
+    user,
+    safebuy_2
 }

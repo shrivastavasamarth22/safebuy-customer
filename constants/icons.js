@@ -18,6 +18,8 @@ export const cart = require('../assets/icons/cart.png');
 export const arrow_right = require('../assets/icons/right-arrow.png');
 export const mascot = require('../assets/icons/mascot.png');
 export const cancel = require('../assets/icons/cancel.png');
+export const gallery = require('../assets/icons/gallery.png');
+export const camera = require('../assets/icons/camera.png')
 
 export default {
     add,
@@ -39,5 +41,7 @@ export default {
     cart,
     arrow_right,
     mascot,
-    cancel
+    cancel,
+    gallery,
+    camera
 }
