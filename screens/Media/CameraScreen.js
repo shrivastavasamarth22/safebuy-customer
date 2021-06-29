@@ -50,7 +50,10 @@ const CameraScreen = ({navigation}) => {
         if (hasPermission) {
             const result = await MediaLibrary.createAssetAsync(image)
             dispatch(customerActions.changeCustomerPicture(1, result.uri))
-            navigation.navigate("Settings")
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "Settings" }]
+            })
         } else {
             return null;
         }
@@ -67,7 +70,6 @@ const CameraScreen = ({navigation}) => {
                     ref={ref => setCamera(ref)}
                     style={styles.camera}
                     type={type}
-                    ratio={'1:1'}
                     autoFocus={Camera.Constants.AutoFocus.on}
                     flashMode={flash}
                 />
@@ -162,7 +164,6 @@ const styles = StyleSheet.create({
     },
     camera: {
         flex: 1,
-        aspectRatio: 1,
     },
     controlContainer: {
         width: "100%",

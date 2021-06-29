@@ -8,7 +8,7 @@ import {
     StatusBar,
     TouchableWithoutFeedback,
     TextInput,
-    Dimensions
+    Keyboard
 } from "react-native";
 import {useSelector, useDispatch} from "react-redux";
 import {Ionicons, AntDesign} from '@expo/vector-icons';
@@ -72,7 +72,8 @@ const UserSettings = ({navigation}) => {
 
     const onSaveButtonPress = () => {
         dispatch(customerActions.changeCustomerAddress(1, address1, address2, landmark, pinCode))
-        onCloseBottomSheet();
+        Keyboard.dismiss();
+        onCloseBottomSheet(addressSheetRef);
     }
 
     const AddressChangeField = () => {

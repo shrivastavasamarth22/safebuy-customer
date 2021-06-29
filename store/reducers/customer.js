@@ -31,6 +31,8 @@ const initialState = {
         city: "Bhopal",
         state: "Madhya Pradesh",
         pinCode: "462026",
+        lat: 23.188,
+        lng: 77.447,
         phone: 9406523103,
         imageUri: ""
     }).lock()

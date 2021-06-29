@@ -24,7 +24,9 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer);
 
 const setupProfilePic = async () => {
-    const result = await MediaLibrary.getAssetsAsync();
+    const result = await MediaLibrary.getAssetsAsync({
+        album: "-2075821635"
+    });
     if (!result.assets.length) return
     const {uri} = result.assets[result.assets.length - 1]
     const id = store.getState().customer.id

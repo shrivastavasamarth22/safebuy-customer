@@ -3,7 +3,7 @@ export class Customer {
         return new Customer(snapshot)
     }
 
-    constructor({id, name, address1, address2, landmark, city, state, pinCode, phone, imageUri}) {
+    constructor({id, name, address1, address2, landmark, city, state, pinCode, lat, lng, phone, imageUri}) {
         this.id = id;
         this.name = name;
         this.address1 = address1;
@@ -12,6 +12,8 @@ export class Customer {
         this.city = city;
         this.state = state;
         this.pinCode = pinCode;
+        this.lat = lat;
+        this.lng = lng;
         this.phone = phone;
         this.imageUri = imageUri;
         this.isImmutable = false
