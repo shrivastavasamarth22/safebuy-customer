@@ -8,12 +8,13 @@ import {
     FlatList,
     Alert
 } from "react-native";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import {COLORS, images} from "../../constants";
 import {TopBar, ShopPanel, OrderSummaryCard, TableComponent} from "../../components";
 import {shopData} from "../../mock-data"
 import {Tab} from "react-native-elements";
+import * as orderActions from '../../store/actions/order'
 
 let today = new Date();
 let dd = today.getDate();
@@ -34,16 +35,17 @@ const OrderStatusHomeDelivery = ({navigation, route}) => {
     const {orderNo} = route.params
     const orders = useSelector(state => state.order.orders);
     const selectedOrder = orders.find(o => o.id === orderNo);
+    const dispatch = useDispatch();
 
     const {shopName, shopPhone, shopAddress, shopPhoto} = useMemo(() => {
-        const shop = shopData.find((s) => s.id === selectedOrder.shopId);
+        const shop =selectedOrder ? shopData.find((s) => s.id === selectedOrder.shopId) : undefined
         const shopName = (shop && shop.name) || "N/A";
         const shopPhone = (shop && shop.phone) || "N/A";
         const shopAddress = (shop && shop.address) || "N/A";
         const shopPhoto = (shop && shop.photo) || undefined
 
         return {shopName, shopPhone, shopAddress, shopPhoto}
-    }, [shopData, selectedOrder.shopId])
+    }, [shopData, selectedOrder && selectedOrder.shopId])
 
 
     const showAlert = () => {
@@ -60,6 +62,8 @@ const OrderStatusHomeDelivery = ({navigation, route}) => {
                 {
                     text: "Yes",
                     onPress: () => {
+                        navigation.goBack();
+                        dispatch(orderActions.deleteOrder(orderNo))
                     },
                     style: "destructive"
                 }
@@ -85,28 +89,35 @@ const OrderStatusHomeDelivery = ({navigation, route}) => {
                     headerText="Your Order"
                     onBackButtonPress={() => navigation.goBack()}
                 />
-                {/* Shop Panel */}
-                <ShopPanel
-                    photo={shopPhoto}
-                    name={shopName}
-                    address={shopAddress}
-                    phone={shopPhone}
-                    today={today}
-                    orderNumber={selectedOrder.id}
-                />
-                {/* Table */}
-                <TableComponent
-                    data={selectedOrder.items}
-                />
 
-                {/* Order Summary */}
-                <OrderSummaryCard
-                    noItems={selectedOrder.items.length}
-                    totalAmount={selectedOrder.totalAmount}
-                    homeDev
-                    confirmed={false}
-                    onButtonPress={showAlert}
-                />
+                {
+                    !!selectedOrder && (
+                        <>
+                            {/* Shop Panel */}
+                            <ShopPanel
+                                photo={shopPhoto}
+                                name={shopName}
+                                address={shopAddress}
+                                phone={shopPhone}
+                                today={today}
+                                orderNumber={selectedOrder.id}
+                            />
+                            {/* Table */}
+                            <TableComponent
+                                data={selectedOrder.items}
+                            />
+
+                            {/* Order Summary */}
+                            <OrderSummaryCard
+                                noItems={selectedOrder.items.length}
+                                totalAmount={selectedOrder.totalAmount}
+                                homeDev
+                                confirmed={false}
+                                onButtonPress={showAlert}
+                            />
+                        </>
+                    )
+                }
 
             </ImageBackground>
         </React.Fragment>

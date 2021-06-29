@@ -1,5 +1,9 @@
 export class Customer {
-    constructor(id, name, address1, address2, landmark, city, state, pinCode, phone, imageUri) {
+    static fromSnapshot(snapshot) {
+        return new Customer(snapshot)
+    }
+
+    constructor({id, name, address1, address2, landmark, city, state, pinCode, phone, imageUri}) {
         this.id = id;
         this.name = name;
         this.address1 = address1;
@@ -10,6 +14,40 @@ export class Customer {
         this.pinCode = pinCode;
         this.phone = phone;
         this.imageUri = imageUri;
+        this.isImmutable = false
+    }
+
+    lock() {
+        this.isImmutable = true
+        return this
+    }
+
+    setAddress(address1,
+               address2,
+               landmark,
+               pinCode,) {
+        if (this.isImmutable) {
+            return Customer.fromSnapshot({
+                ...this,
+                address1,
+                address2,
+                landmark,
+                pinCode,
+            })
+        }
+        this.address1 = address1
+        this.address2 = address2
+        this.landmark = landmark
+        this.pinCode = pinCode
+        return this
+    }
+
+    setImage(imageUri) {
+        if (this.isImmutable) {
+            return Customer.fromSnapshot({...this, imageUri})
+        }
+        this.imageUri = imageUri
+        return this
     }
 }
 

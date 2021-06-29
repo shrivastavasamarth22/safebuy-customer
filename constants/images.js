@@ -6,9 +6,7 @@ export const okra = require('../assets/images/Vegetables/Okra.png');
 export const spinach = require('../assets/images/Vegetables/spinach.png');
 
 // Fruits
-
-
-export const apple_wahington = require('../assets/images/Fruits/applewashington.png');
+export const apple_washington = require('../assets/images/Fruits/applewashington.png');
 export const bananas = require('../assets/images/Fruits/bananas.png');
 
 
@@ -36,7 +34,7 @@ export default {
     lauki,
     okra,
     spinach,
-    apple_wahington,
+    apple_wahington: apple_washington,
     bananas,
     fruit_parlor,
     ganesh,

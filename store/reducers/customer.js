@@ -2,71 +2,52 @@ import {CHANGE_CUSTOMER_ADDRESS, CHANGE_CUSTOMER_PICTURE} from "../actions/custo
 import Customer from "../../models/customer";
 import * as MediaLibrary from 'expo-media-library';
 
+// How to create an interval
 
-const checkForImage = async () => {
-    const result = await MediaLibrary.getAssetsAsync();
-    const { uri } = result.assets[result.assets.length - 1]
-    return uri
-}
+// const doSomething = () => console.log("something")
+//
+// React.useEffect(() => {
+//     let timer
+//     const handler = () => {
+//         timer = setTimeout(() => {
+//             clearTimeout(timer)
+//             doSomething()
+//             handler();
+//         }, 5000)
+//     }
+//
+//     return () => {
+//         clearTimeout(timer)
+//     }
+// }, [])
 
 const initialState = {
-    customer: new Customer(
-        1,
-        "Samarth Shrivastava",
-        "A-3/603 Vishnu Hitech City",
-        "Near Dana Pani Restaurant, Bawadiya Kalan",
-        "Bawadiya Railway Crossing",
-        "Bhopal",
-        "Madhya Pradesh",
-        "462026",
-        9406523103,
-        ""
-    )
+    customer: new Customer({
+        id: 1,
+        name: "Samarth Shrivastava",
+        address1: "A-3/603 Vishnu Hitech City",
+        address2: "Near Dana Pani Restaurant, Bawadiya Kalan",
+        landmark: "Bawadiya Railway Crossing",
+        city: "Bhopal",
+        state: "Madhya Pradesh",
+        pinCode: "462026",
+        phone: 9406523103,
+        imageUri: ""
+    }).lock()
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case CHANGE_CUSTOMER_ADDRESS:
-            let { id, newAddress1, newAddress2, newLandmark, newPinCode } = action.payload
+        case CHANGE_CUSTOMER_ADDRESS: {
+            const {newAddress1, newAddress2, newLandmark, newPinCode} = action.payload
+            const customer = state.customer.setAddress(newAddress1, newAddress2, newLandmark, newPinCode)
+            return {...state, customer }
+        }
 
-            let newCustomer =  new Customer(
-                id,
-                state.customer.name,
-                newAddress1,
-                newAddress2,
-                newLandmark,
-                state.customer.city,
-                state.customer.state,
-                newPinCode,
-                state.customer.phone,
-                state.customer.imageUri
-            )
-
-            return {
-                ...state,
-                customer: newCustomer
-            }
-
-        case CHANGE_CUSTOMER_PICTURE:
-            const { newUri } = action.payload
-
-                let newCstmr = new Customer(
-                action.payload.id,
-                state.customer.name,
-                state.customer.address1,
-                state.customer.address2,
-                state.customer.landmark,
-                state.customer.city,
-                state.customer.state,
-                state.customer.pinCode,
-                state.customer.phone,
-                newUri
-            )
-
-            return {
-                ...state,
-                customer: newCstmr
-            }
+        case CHANGE_CUSTOMER_PICTURE: {
+            const customer = state.customer.setImage(action.payload.newUri)
+            return {...state, customer }
+        }
 
         default:
             return state

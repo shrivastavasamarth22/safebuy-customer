@@ -40,10 +40,12 @@ const OrderNew = ({navigation}) => {
                     onCreditPress={() => navigation.navigate("CreditHistoryFlow")}
                     activeTab="orderNew"
                 />
-                <Image
-                    source={icons.illustration}
-                    style={styles.illustrationStyle}
-                />
+                <View pointerEvents={"none"} style={{width: "100%", height: "60%"}}>
+                    <Image
+                        source={icons.illustration}
+                        style={styles.illustrationStyle}
+                    />
+                </View>
                 <View style={{marginTop: -40}}>
                     <Text style={styles.headerMediumTextStyle}>
                         Looks like you do not have any nearby favorites...
@@ -148,7 +150,7 @@ const styles = StyleSheet.create({
     },
     illustrationStyle: {
         width: "100%",
-        height: "60%",
+        height: "100%",
         resizeMode: "contain",
         marginTop: -50
     },
