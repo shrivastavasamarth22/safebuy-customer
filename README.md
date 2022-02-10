@@ -9,6 +9,8 @@
 - [x] expo-media-library asset check on startup
 - [x] Keyboard avoiding view for bottom sheet
 - [ ] Authentication System
+- [ ] Font.loadAsync showing an error in smaller devices!
+
 
 ## Google Maps and Area Coverage Feature
 - [ ] Install Google Maps (ideally react-native-maps)

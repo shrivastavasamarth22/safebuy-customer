@@ -37,7 +37,8 @@
     "react-redux": "^7.2.4",
     "react-responsive": "^8.2.0",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
-    "redux": "^4.1.0"
+    "redux": "^4.1.0",
+    "expo-font": "~8.4.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

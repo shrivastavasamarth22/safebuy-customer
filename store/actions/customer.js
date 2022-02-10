@@ -1,7 +1,7 @@
 export const CHANGE_CUSTOMER_ADDRESS = 'CHANGE_CUSTOMER_ADDRESS';
 export const CHANGE_CUSTOMER_PICTURE = 'CHANGE_CUSTOMER_PICTURE';
 
-export const changeCustomerAddress = (id, newAddress1, newAddress2, newLandmark, newPinCode) => {
+export const changeCustomerAddress = (id, newAddress1, newAddress2, newLandmark, newPinCode, newLat, newLng) => {
     return {
         type: CHANGE_CUSTOMER_ADDRESS,
         payload: {
@@ -9,7 +9,9 @@ export const changeCustomerAddress = (id, newAddress1, newAddress2, newLandmark,
             newAddress1,
             newAddress2,
             newLandmark,
-            newPinCode
+            newPinCode,
+            newLat,
+            newLng
         }
     }
 }

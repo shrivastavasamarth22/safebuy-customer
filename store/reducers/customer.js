@@ -1,6 +1,9 @@
-import {CHANGE_CUSTOMER_ADDRESS, CHANGE_CUSTOMER_PICTURE} from "../actions/customer";
+import {
+    CHANGE_CUSTOMER_ADDRESS,
+    CHANGE_CUSTOMER_PICTURE,
+} from "../actions/customer";
 import Customer from "../../models/customer";
-import * as MediaLibrary from 'expo-media-library';
+import * as MediaLibrary from "expo-media-library";
 
 // How to create an interval
 
@@ -34,24 +37,32 @@ const initialState = {
         lat: 23.188,
         lng: 77.447,
         phone: 9406523103,
-        imageUri: ""
-    }).lock()
-}
+        imageUri: "",
+    }).lock(),
+};
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case CHANGE_CUSTOMER_ADDRESS: {
-            const {newAddress1, newAddress2, newLandmark, newPinCode} = action.payload
-            const customer = state.customer.setAddress(newAddress1, newAddress2, newLandmark, newPinCode)
-            return {...state, customer }
+            const { newAddress1, newAddress2, newLandmark, newPinCode, newLat, newLng } =
+                action.payload;
+            const customer = state.customer.setAddress(
+                newAddress1,
+                newAddress2,
+                newLandmark,
+                newPinCode,
+                newLat,
+                newLng
+            );
+            return { ...state, customer };
         }
 
         case CHANGE_CUSTOMER_PICTURE: {
-            const customer = state.customer.setImage(action.payload.newUri)
-            return {...state, customer }
+            const customer = state.customer.setImage(action.payload.newUri);
+            return { ...state, customer };
         }
 
         default:
-            return state
+            return state;
     }
-}
+};

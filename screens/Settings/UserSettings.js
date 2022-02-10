@@ -71,7 +71,7 @@ const UserSettings = ({navigation}) => {
 
 
     const onSaveButtonPress = () => {
-        dispatch(customerActions.changeCustomerAddress(1, address1, address2, landmark, pinCode))
+        dispatch(customerActions.changeCustomerAddress(1, address1, address2, landmark, pinCode, 0, 0))
         Keyboard.dismiss();
         onCloseBottomSheet(addressSheetRef);
     }

@@ -66,13 +66,14 @@ export default function App() {
                 onError={(err) => console.error(err)}
             />
         )
+    } else {
+        return (
+            <Provider store={store}>
+                <NavigationContainer>
+                    <StackNavigator/>
+                </NavigationContainer>
+            </Provider>
+        );
     }
 
-    return (
-        <Provider store={store}>
-            <NavigationContainer>
-                <StackNavigator/>
-            </NavigationContainer>
-        </Provider>
-    );
 }

@@ -95,4 +95,8 @@ const styles = StyleSheet.create({
     color: COLORS.grey,
     marginBottom: 7,
   },
+  quantityTextStyle: {
+    fontSize: 16,
+    fontFamily: "Roboto_500Medium",
+  },
 });

@@ -27,7 +27,9 @@ export class Customer {
     setAddress(address1,
                address2,
                landmark,
-               pinCode,) {
+               pinCode,
+               newLat,
+               newLng) {
         if (this.isImmutable) {
             return Customer.fromSnapshot({
                 ...this,
@@ -35,6 +37,8 @@ export class Customer {
                 address2,
                 landmark,
                 pinCode,
+                newLat,
+                newLng
             })
         }
         this.address1 = address1
